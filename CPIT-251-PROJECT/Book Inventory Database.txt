@@ -1,0 +1,6 @@
+9781408271773 Medical_Law Jonathan_Herring applied_sciences 4 true
+0878147616 Natural_Gas_and_Electric_Power_In_Nontechnical_Language Ann_Chambers applied_sciences 6 true
+9780071218788 Introduction_to_Object_Oriented Stephen_Schach computer_and_technology 3 true
+9781259589683 Oracle_Database_12c Richard_Niemiec computer_and_technology 2 true
+9788120345164 Experimental_Psychology Hardeep_Shergill philosophy 7 true
+9780357113516 Calculus_Early_Transcendentals James_Stewart Natural_Science 5 true
