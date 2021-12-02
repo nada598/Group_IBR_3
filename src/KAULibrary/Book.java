@@ -190,5 +190,18 @@ public class Book {
         }
     }
     
-   
+    public void borrowCancelation(String isbn, String userID) {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            String ConnectionURL = "jdbc:mysql://localhost:3306/KAULibraryDB";
+            Connection con = DriverManager.getConnection(ConnectionURL, "root", "root");
+            Statement st = con.createStatement();
+            st.executeUpdate("delete from issued_book where isbn= " + isbn + " AND userID = '" + userID + "'");
+            increaseBookAvailability(isbn);
+        } catch (Exception e) {
+            System.out.println("SQL statement is not executed!");
+            System.err.println(e.getMessage());
+        }
+    }
+    
 }//class book
