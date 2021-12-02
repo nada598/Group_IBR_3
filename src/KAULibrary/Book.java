@@ -167,5 +167,28 @@ public class Book {
         }
     }
 
+    public void increaseBookAvailability(String isbn) {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            String ConnectionURL = "jdbc:mysql://localhost:3306/KAULibraryDB";
+            con = DriverManager.getConnection(ConnectionURL, "root", "root");
+
+            String selectSQL = "SELECT availability FROM book WHERE isbn = '" + isbn + "'";
+            PreparedStatement preparedStmt = con.prepareStatement(selectSQL);
+            ResultSet stmtResult = preparedStmt.executeQuery();
+            stmtResult.next();
+            
+            String query = "update book set availability = ? WHERE isbn = '" + isbn + "'";
+            PreparedStatement preparedStmt2 = con.prepareStatement(query);
+            preparedStmt2.setInt(1, stmtResult.getInt("availability") + 1);
+            preparedStmt2.executeUpdate();
+            con.close();
+        } catch (SQLException s) {
+            System.out.println("SQL statement is not executed!");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
    
-}
+}//class book
