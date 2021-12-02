@@ -6,6 +6,7 @@ public class Welcome extends javax.swing.JFrame {
 
     public Welcome() {
         initComponents();
+        setLocationRelativeTo(null);
     }
 
    
