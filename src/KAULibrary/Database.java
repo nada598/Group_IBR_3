@@ -21,13 +21,9 @@ public class Database {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             String ConnectionURL = "jdbc:mysql://localhost:3306";
-            con = DriverManager.getConnection(ConnectionURL, "root", "root");
+            con = DriverManager.getConnection(ConnectionURL, "root", "sumar");
             Statement st = con.createStatement();
             st.executeUpdate("CREATE DATABASE KAULibraryDB");
-            st.executeUpdate("CREATE DATABASE KAULibraryDB");
-            ConnectionURL = "jdbc:mysql://localhost:3306/KAULibraryDB";
-            con = DriverManager.getConnection(ConnectionURL, "root", "root");
-            st = con.createStatement();
             con.close();
         } catch (Exception e) {
             e.printStackTrace();
