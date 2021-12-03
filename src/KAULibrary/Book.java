@@ -289,6 +289,38 @@ public class Book {
             e.printStackTrace();
         }
     }
-    
+  // a method that display all the search results to the user and the admin
+    public void search(String filter, JTable bookTabel, String search) {
+        DefaultTableModel bookTable = (DefaultTableModel) bookTabel.getModel();
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            String ConnectionURL = "jdbc:mysql://localhost:3306/KAULibraryDB";
+            Connection con = DriverManager.getConnection(ConnectionURL, "root", "root");
+            String sql = query(filter, search);
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
+                String[] row = {rs.getString("ISBN"), rs.getString("book_title"), rs.getString("classification")};
+                bookTable.addRow(row);
+            }
+        } catch (Exception e) {
+            System.out.println("SQL statement is not executed!");
+            System.err.println(e.getMessage());
+        }
+    }
+    // a method that assist the search process when using filters
+    public String query(String filter, String search) {
+        // this method return a query with the choosen search filter that the user/admin chose 
+        if (filter.equalsIgnoreCase("Title")) {
+            return "SELECT ISBN, book_title, classification FROM book where book_title like '%" + search + "%'";
+        } else if (filter.equalsIgnoreCase("Classification")) {
+            return "SELECT ISBN, book_title, classification FROM book where Classification like '%" + search + "%'";
+        } else if (filter.equalsIgnoreCase("ISBN")) {
+            return "SELECT ISBN, book_title, classification FROM book where ISBN like '%" + search + "%'";
+        } else if (filter.equalsIgnoreCase("Author")) {
+            return "SELECT ISBN, book_title, classification FROM book where author_name like '%" + search + "%'";
+        }
+        return "";
+    }
     
 }//class book
