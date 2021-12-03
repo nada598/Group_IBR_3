@@ -255,6 +255,15 @@ public class Database {
         }
     }
 
+      // a method to assist the login method to decide wich query to use
+    public static String query(String id, String password) {
+        if (id.startsWith("000")) {
+            return "SELECT admin_ID, password FROM admin WHERE admin_ID = '" + id + "'" + "and password = '" + password + "'";
+        } else {
+            return "SELECT Id, password FROM user WHERE Id = '" + id + "'" + "and password = '" + password + "'";
+        }
+    }
+    
      public static boolean login(String id, String password) {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
