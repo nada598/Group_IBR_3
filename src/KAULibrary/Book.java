@@ -306,6 +306,7 @@ public class Book {
         } catch (Exception e) {
             System.out.println("SQL statement is not executed!");
             System.err.println(e.getMessage());
+          
         }
     }
     // a method that assist the search process when using filters
