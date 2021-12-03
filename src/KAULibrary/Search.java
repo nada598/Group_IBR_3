@@ -38,6 +38,17 @@ public class Search extends javax.swing.JFrame {
         updateButton.setVisible(false);
         deleteButton.setVisible(false);
     }
+     public Search(int x) {
+        initComponents();
+        setLocationRelativeTo(null);
+        searchComboBox.setSelectedItem(selectedItem);
+        book.search(searchComboBox.getSelectedItem().toString(), jTable1, book.getBookTitle());
+        searchTypeTextField.setText(searchf);
+        detailsButton.setVisible(true);
+        addButton.setVisible(false);
+        updateButton.setVisible(false);
+        deleteButton.setVisible(false);
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -265,16 +276,24 @@ public class Search extends javax.swing.JFrame {
     private void searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchActionPerformed
         book = new Book();
         boolean b = false;
+        int x = 0;
         book.setBookTitle(searchTypeTextField.getText().trim());
         searchf = searchTypeTextField.getText();
-
         selectedItem = searchComboBox.getSelectedItem();
-        if (!searchTypeTextField.getText().equalsIgnoreCase("")) {
+        if (!searchTypeTextField.getText().equalsIgnoreCase("") && !id.startsWith("000")) {
             Search search = new Search(b);
             search.show();
             dispose();
-        } else {
+        } else if (searchTypeTextField.getText().equalsIgnoreCase("") && !id.startsWith("000")) {
             Search search = new Search();
+            search.show();
+            dispose();
+        } else if (!searchTypeTextField.getText().equalsIgnoreCase("") && id.startsWith("000")){
+             Search search = new Search(id);
+            search.show();
+            dispose();
+        } else if (searchTypeTextField.getText().equalsIgnoreCase("") && id.startsWith("000")){
+             Search search = new Search(x);
             search.show();
             dispose();
         }
