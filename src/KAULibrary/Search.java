@@ -289,7 +289,7 @@ public class Search extends javax.swing.JFrame {
             search.show();
             dispose();
         } else if (!searchTypeTextField.getText().equalsIgnoreCase("") && id.startsWith("000")){
-             Search search = new Search(id);
+             Search search = new Search(b);
             search.show();
             dispose();
         } else if (searchTypeTextField.getText().equalsIgnoreCase("") && id.startsWith("000")){
