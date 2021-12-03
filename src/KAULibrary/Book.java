@@ -203,5 +203,92 @@ public class Book {
             System.err.println(e.getMessage());
         }
     }
+ 
+        // a method to check the copied of the book
+    public String checkBook(String isbn) {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            String ConnectionURL = "jdbc:mysql://localhost:3306/KAULibraryDB";
+            con = DriverManager.getConnection(ConnectionURL, "root", "sumar");
+
+            String selectSQL = "SELECT availability FROM book WHERE ISBN = '" + isbn + "'";
+            PreparedStatement preparedStmt = con.prepareStatement(selectSQL);
+            ResultSet stmtResult = preparedStmt.executeQuery();
+            stmtResult.next();
+            if (stmtResult.getInt("availability") > 0) {
+                return "";
+            }
+            con.close();
+        } catch (SQLException s) {
+            System.out.println("SQL statement is not executed!");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "availability";
+    }
+    
+      // a method to check if the user has borrowed more than 5 books if so their status become false
+    public String checkUserHistory(String id) {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            String ConnectionURL = "jdbc:mysql://localhost:3306/KAULibraryDB";
+            con = DriverManager.getConnection(ConnectionURL, "root", "sumar");
+
+            String selectSQL = "SELECT userID, COUNT(userID) FROM issued_book WHERE userID = '" + id + "'";
+            PreparedStatement preparedStmt = con.prepareStatement(selectSQL);
+            ResultSet stmtResult = preparedStmt.executeQuery();
+            stmtResult.next();
+            if (stmtResult.getInt("count(userID)") < 5) {
+                return "";
+            } else {
+                String query = "update user set status = ? WHERE id = '" + id + "'";
+                PreparedStatement preparedStmt2 = con.prepareStatement(query);
+                preparedStmt2.setBoolean(1, false);
+                preparedStmt2.executeUpdate();
+            }
+            con.close();
+        } catch (SQLException s) {
+            System.out.println(s + " checkUserHistory");
+            System.out.println("SQL statement is not executed!");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "history";
+    }
+    
+    // a method to store the process that happens on the book along with the admin that updated the book inventory
+    public void bookUpdateHistory(String ISBN, String adminID) {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            String ConnectionURL = "jdbc:mysql://localhost:3306/KAULibraryDB";
+            con = DriverManager.getConnection(ConnectionURL, "root", "sumar");
+
+            String selectSQL = "SELECT admin_ID FROM admin WHERE admin_ID = '" + adminID + "'";
+            PreparedStatement preparedStmt = con.prepareStatement(selectSQL);
+            ResultSet stmtResult = preparedStmt.executeQuery();
+
+            String selectSQL2 = "SELECT ISBN FROM book WHERE isbn = '" + ISBN + "'";
+            PreparedStatement preparedStmt2 = con.prepareStatement(selectSQL2);
+            ResultSet stmtResult2 = preparedStmt2.executeQuery();
+
+            java.util.Date date = new java.util.Date();
+            java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+            stmtResult.next();
+            stmtResult2.next();
+            String query = " insert into inventory_history (ISBN, adminID, update_date)"
+                    + " values (?, ?, ?)";
+            PreparedStatement preparedStmt3 = con.prepareStatement(query);
+            preparedStmt3.setInt(1, stmtResult2.getInt("ISBN"));
+            preparedStmt3.setString(2, stmtResult.getString("admin_ID"));
+            preparedStmt3.setDate(3, sqlDate);
+            preparedStmt3.execute();
+            con.close();
+        } catch (SQLException s) {
+            System.out.println("SQL statement is not executed!");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
     
 }//class book
