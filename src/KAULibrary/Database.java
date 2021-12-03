@@ -255,4 +255,27 @@ public class Database {
         }
     }
 
+     public static boolean login(String id, String password) {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            String ConnectionURL = "jdbc:mysql://localhost:3306/KAULibraryDB";
+            con = DriverManager.getConnection(ConnectionURL, "root", "root");
+            String selectSQL = query(id, password);
+            PreparedStatement preparedStmt = con.prepareStatement(selectSQL);
+            ResultSet stmtResult = preparedStmt.executeQuery();
+            if (stmtResult.isBeforeFirst()) {
+                return true;
+            }
+            con.close();
+        } catch (SQLException s) {
+            System.out.println("SQL statement is not executed!");
+            return false;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return false;
+    }
+    
+    
 }
