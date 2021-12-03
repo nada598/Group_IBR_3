@@ -13,7 +13,7 @@ public class Database {
 //        createUser();
 //        createAdmin();
 //          createBook();
-
+//.
     }
 
     // a method to create the KAU Library Database
@@ -21,7 +21,7 @@ public class Database {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             String ConnectionURL = "jdbc:mysql://localhost:3306";
-            con = DriverManager.getConnection(ConnectionURL, "root", "sumar");
+            con = DriverManager.getConnection(ConnectionURL, "root", "su");
             Statement st = con.createStatement();
             st.executeUpdate("CREATE DATABASE KAULibraryDB");
             con.close();
