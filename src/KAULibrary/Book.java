@@ -190,18 +190,27 @@ public class Book {
         }
     }
     
-    public void borrowCancelation(String isbn, String userID) {
+    public boolean borrowCancelation(String isbn, String userID) {
+        boolean result;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             String ConnectionURL = "jdbc:mysql://localhost:3306/KAULibraryDB";
-            Connection con = DriverManager.getConnection(ConnectionURL, "root", "root");
+          //  Connection con = DriverManager.getConnection(ConnectionURL, "root", "root");
+            Connection con = DriverManager.getConnection(ConnectionURL,"halahmadi","namnam1417");
+            
             Statement st = con.createStatement();
             st.executeUpdate("delete from issued_book where isbn= " + isbn + " AND userID = '" + userID + "'");
             increaseBookAvailability(isbn);
+            st.close();
+            result=true;
+            
         } catch (Exception e) {
             System.out.println("SQL statement is not executed!");
             System.err.println(e.getMessage());
+           result=false;
         }
+         
+        return result;
     }
  
         // a method to check the copied of the book
@@ -436,6 +445,33 @@ public class Book {
         }
     }
 
-  
+   // a method to help with the gui, it get all the books from the database and display it on a tabel for the user and admin
+    public boolean populateBookTabel(JTable bookTabel) {
+        // initialize a default table to manually add the rows and columns 
+        DefaultTableModel bookTable = (DefaultTableModel) bookTabel.getModel();
+        boolean isPopulated = false;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            String ConnectionURL = "jdbc:mysql://localhost:3306/KAULibraryDB";
+          //  Connection con = DriverManager.getConnection(ConnectionURL, "root", "root");
+             Connection con = DriverManager.getConnection(ConnectionURL,"halahmadi","namnam1417");
+             
+            // a quesry that get the book information to display it on the table
+            String selectSQL = "SELECT ISBN, book_title, classification FROM book";
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(selectSQL);
+            while (rs.next()) {
+                // store each book information into an array to add it to the tabel
+                String[] row = {rs.getString("ISBN"), rs.getString("book_title"), rs.getString("classification")};
+                bookTable.addRow(row);
+            }
+            st.close();
+            isPopulated = true;
+        } catch (Exception e) {
+            System.out.println("SQL statement is not executed!");
+            System.err.println(e.getMessage());
+        }
+        return isPopulated;
+    }
     
 }//class book
